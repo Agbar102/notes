@@ -1,16 +1,26 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.db.models import CASCADE
 
-from users.models import CustomUser
+User = get_user_model()
+
+class CommonInfo(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    delete_at = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        abstract = True
+
+    def __str__(self):
+        return self.title
 
 
-class Note(models.Model):
+class Note(CommonInfo):
     title = models.CharField(max_length=255)
     is_private = models.BooleanField(default=False)
     description = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='notes')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notes')
 
     def __str__(self):
         return self.title

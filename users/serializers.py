@@ -35,6 +35,8 @@ class RegisterUserSerializer(serializers.Serializer):
             raise serializers.ValidationError("Пароль должен быть с саглавной буквы")
         if not re.search(r"\d", password1):
             raise serializers.ValidationError("Пароль должен содержать цивры")
+        if not len(password1) < 8:
+            raise serializers.ValidationError("Пароль должен содержать не менее восьми символов")
         return attrs
 
 
