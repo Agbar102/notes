@@ -25,10 +25,10 @@ class NoteSerializer(serializers.ModelSerializer):
 class CommentSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()
 
-
     class Meta:
          model = Comment
          fields = ['description', 'created_at', 'user']
+
 
     def get_user(self, obj):
         return obj.user.email if obj.user else ""

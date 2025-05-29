@@ -43,7 +43,4 @@ class NoteDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated, ]
 
 
-
-
-
 # создать 3 заметки от разных юзеров
