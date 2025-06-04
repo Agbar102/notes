@@ -1,5 +1,8 @@
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.response import Response
 from django_filters import rest_framework as filters
 
 from comment.models import Comment
@@ -15,6 +18,29 @@ class CommentViewSet(ModelViewSet):
     # filterset_fields = ('description',)
     filterset_class = CommentFilter
     pagination_class = LargeResultsSetPagination
+    permission_classes = []
+
+    description = openapi.Parameter('description', openapi.IN_QUERY,
+                                    description="Передаем description",type=openapi.TYPE_STRING)
+
+    created_at = openapi.Parameter('created_at', openapi.IN_QUERY,
+                                   description="Передаем время создания",type=openapi.TYPE_NUMBER)
+
+    user = openapi.Parameter('user', openapi.IN_QUERY,
+                                   description="Передаем user", type=openapi.TYPE_INTEGER)
+
+
+    @swagger_auto_schema(manual_parameters=[description, created_at, user  ])
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
 
     # def get_queryset(self):
     #     search = self.request.query_params.get("search")

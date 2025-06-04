@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django',
     'rest_framework_simplejwt',
     'django_filters',
+    'drf_yasg',
 
     #app
     'users',
@@ -124,6 +125,16 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'in': 'header',
+            'name': 'Authorization'
+        }
+    },
+}
 
 
 # Internationalization

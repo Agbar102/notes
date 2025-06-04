@@ -4,6 +4,7 @@ from rest_framework import serializers
 
 import comment
 from comment.models import Comment
+from comment.serializers import CommentSerializer
 from note.models import Note
 
 
@@ -21,22 +22,22 @@ class NoteSerializer(serializers.ModelSerializer):
             'user': {"required": False},
         }
 
-
-class CommentSerializer(serializers.ModelSerializer):
-    user = serializers.SerializerMethodField()
-
-    class Meta:
-         model = Comment
-         fields = ['description', 'created_at', 'user']
-
-
-    def get_user(self, obj):
-        return obj.user.email if obj.user else ""
-
-
-    def to_representation(self, instance):
-        data = super().to_representation(instance)
-        return data
+#
+# class CommentSerializer(serializers.ModelSerializer):
+#     user = serializers.SerializerMethodField()
+#
+#     class Meta:
+#          model = Comment
+#          fields = ['description', 'created_at', 'user']
+#
+#
+#     def get_user(self, obj):
+#         return obj.user.email if obj.user else ""
+    #
+    #
+    # def to_representation(self, instance):
+    #     data = super().to_representation(instance)
+    #     return data
 
 
 class NotesSerializer(CommentSerializer):
